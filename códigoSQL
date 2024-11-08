@@ -1,0 +1,90 @@
+create database Maicrousofiti
+
+use Maicrousofiti
+
+create table Cliente (
+cli_cpf varchar(12) primary key not null,
+cli_nome varchar(45) not null,
+cli_identidade varchar(20) not null,
+cli_dt_nascimento date not null
+)
+
+create table Familia (
+cli_fam_id int primary key auto_increment,
+cli_pai varchar(45),
+cli_mae varchar(45),
+cli_conjugue varchar(45)
+)
+
+create table Filho (
+filho_id int primary key auto_increment,
+filho_nome varchar(45) not null,
+filho_idade int not null
+)
+
+create table Endereço (
+end_id int primary key auto_increment,
+end_logadouro varchar(45) not null,
+end_numero int not null,
+end_bairro varchar(30) not null,
+end_cidade varchar(30) not null,
+end_estado varchar(25) not null,
+end_complemento varchar(40),
+end_tipo varchar(25) not null
+)
+
+create table Telefone (
+tel_id int primary key auto_increment,
+tel_tipo varchar(20) not null,
+tel_ddd int not null,
+tel_numero varchar(11) not null,
+tel_cli_fax varchar(20)
+)
+
+create table Nacionalidade (
+nac_pais varchar(35) primary key not null,
+nac_gentilico varchar(35) not null,
+nac_continente varchar(30) not null
+)
+
+create table Naturalidade (
+nat_cidade varchar(35) primary key not null,
+nat_gentilico varchar(30) not null
+)
+
+create Table Pertence (
+cli_cpf varchar(12) not null,
+cli_fam_id int not null,
+foreign key (cli_cpf) references Cliente (cli_cpf),
+foreign key (cli_fam_id) references Familia (cli_fam_id)
+)
+
+create table PodeTer (
+filho_id int primary key not null,
+cli_cpf varchar(12) not null,
+foreign key (filho_id) references Filho (filho_id),
+foreign key (cli_cpf) references Cliente (cli_cpf)
+)
+
+create table Contatos (
+tel_id int primary key ,
+cli_cpf varchar(12) not null,
+foreign key (tel_id) references Telefone (tel_id),
+foreign key(cli_cpf) references Cliente (cli_cpf)
+)
+
+create table Nasceu (
+cli_cpf varchar(12) primary key,
+nac_pais varchar(35) not null,
+nat_cidade varchar(35) not null,
+foreign key (cli_cpf) references Cliente (cli_cpf),
+foreign key (nac_pais) references Nacionalidade (nac_pais),
+foreign key (nat_cidade) references Naturalidade (nat_cidade)
+)
+
+create table Mora (
+end_id int,
+cli_cpf varchar(12) primary key,
+foreign key (end_id) references Endereço (end_id),
+foreign key (cli_cpf) references Cliente (cli_cpf)
+);
